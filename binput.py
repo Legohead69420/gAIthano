@@ -29,7 +29,7 @@ def bprint(prompt: str, name: str, color=Fore.BLUE):
     for i in range(2):
         print(Cursor.UP(2))
     print("".center(columns - 1) + "│", end="\r", flush=True)
-    result = print("│  " + Fore.WHITE + name)
+    print("│  " + Fore.WHITE + name)
     print()
 
 

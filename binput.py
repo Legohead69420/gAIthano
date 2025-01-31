@@ -1,5 +1,5 @@
 from colorama.ansi import Cursor
-from colorama import Fore, Back, init
+from colorama import Fore, init
 
 init()
 

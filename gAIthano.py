@@ -38,13 +38,18 @@ def runmodel():
     Available Commands:
       /clear          Clear session context
       /bye            Exit
-      /?, /help       Help for a command\n"""
+      /context     Print the current sessions context
+      /?, /help     Help for a command\n"""
             print(helpmsg)
             continue
 
         elif message == "/clear":
             cls()
             messages = [{"role": "system", "content": baseprompt}]
+            continue
+        elif message == "/context":
+            cls()
+            print(messages)
             continue
 
         messages.append({"role": "user", "content": message})
@@ -63,9 +68,9 @@ def runmodel():
             )
             sleep(0.1)
         print("                                               ")
-        print(f"Model took {e:0.3f} seconds")
+        print(f"{Back.GREEN}[assistant] took {e:0.3f} seconds")
         print(response["message"]["content"])
-        print("Speaking...")
+        print(f"{Back.GREEN}Speaking...")
         io.speak(response["message"]["content"])
         print()
 

@@ -1,7 +1,7 @@
 from pylogger import Logger
 from pylogger.operators import cls
-import gAIthano.gAIthano.IOMng as io
-from gAIthano.gAIthano.binput import *
+import IOMng as io
+from binput import *
 from time import strftime, sleep
 from time import perf_counter as cont
 from colorama import Fore, Back, init

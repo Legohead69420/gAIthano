@@ -40,11 +40,12 @@ def runmodel():
       /bye            Exit
       /?, /help       Help for a command\n"""
             print(helpmsg)
-            return
+            continue
 
         elif message == "/clear":
+            cls()
             messages = [{"role": "system", "content": baseprompt}]
-            return
+            continue
 
         messages.append({"role": "user", "content": message})
         t = cont()
@@ -64,6 +65,7 @@ def runmodel():
         print("                                               ")
         print(f"Model took {e:0.3f} seconds")
         print(response["message"]["content"])
+        print("Speaking...")
         io.speak(response["message"]["content"])
         print()
 

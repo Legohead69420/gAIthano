@@ -2,6 +2,8 @@ from pylogger import Logger
 from pylogger.operators import cls
 import IOMng as io
 from binput import *
+import shutil
+import cursor
 from time import strftime, sleep
 from time import perf_counter as cont
 from colorama import Fore, Back, init
@@ -11,6 +13,8 @@ from ollama import chat
 from ollama import ChatResponse
 
 loaderlist = ["⠄", "⠆", "⠇", "⠋", "⠙", "⠸", "⠰", "⠠", "⠰", "⠸", "⠙", "⠋", "⠇", "⠆"]
+
+columns = shutil.get_terminal_size().columns
 
 lg = Logger("C:/-py-stuff/gAIthano/gAIthano.log", "gAIthano")
 baseprompt = f"""
@@ -31,16 +35,79 @@ def runmodel():
 
         if message == "/bye":
             exit(cls())
-
         elif message == "/?" or message == "/help":
+            cmdlist1 = [
+                ["1. /clear", "Clear session context"],
+                ["2. /bye", "Exits the program"],
+                ["3. /context", "Prints the current session context"],
+                ["4. /?, /help", "Show this screen"],
+            ]
+            lengths = []
+            lengths2 = []
+            for item in cmdlist1:
+                lengths.append(len(item[0]))
+                lengths2.append(len(item[1]))
+            cmdlist2 = []
+            for item in cmdlist1:
+                spaces = max(lengths) - len(item[0])
+                spaces2 = max(lengths2) - len(item[1])
+                space = ""
+                space2 = ""
+                for i in range(spaces):
+                    space += " "
+                for i in range(spaces2):
+                    space2 += " "
+                cmdlist2.append(f"{item[0]}{space} │ {item[1]}{space2}")
             cls()
-            helpmsg = """
-    Available Commands:
-      /clear          Clear session context
-      /bye            Exit
-      /context     Print the current sessions context
-      /?, /help     Help for a command\n"""
-            print(helpmsg)
+            out = ""
+            cursor.hide()
+            for item in cmdlist2:
+                for item1 in [*item]:
+                    if not item1 == " ":
+                        sleep(0.009)
+                    out = out + item1
+                    cls()
+                    print(
+                        Fore.BLUE
+                        + "╭"
+                        + " Command list ".center(columns - 2, "─")
+                        + "╯"
+                        + Fore.GREEN
+                    )
+                    if cmdlist2.index(item) >= 1:
+                        for i in range(cmdlist2.index(item)):
+                            print(
+                                Fore.BLUE
+                                + "│"
+                                + Fore.GREEN
+                                + str(cmdlist2[i]).center(columns - 1)
+                            )
+                    spaces = max(lengths) - len(out)
+                    space = ""
+                    for i in range(spaces):
+                        space = space + " "
+                    print(
+                        Fore.BLUE
+                        + "│"
+                        + Fore.GREEN
+                        + str(out + space).center(columns - 1)
+                    )
+                    if cmdlist2.index(item) == len(cmdlist2) - 1:
+                        print(
+                            Fore.BLUE
+                            + "╰"
+                            + " Command list ".center(columns - 2, "─")
+                            + "╮"
+                        )
+                    else:
+                        print(
+                            Fore.BLUE
+                            + "╰"
+                            + " Command list ".center(columns - 2, "─")
+                            + "─"
+                        )
+                out = ""
+            cursor.show()
             continue
 
         elif message == "/clear":

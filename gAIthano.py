@@ -8,6 +8,8 @@ from time import strftime, sleep
 from time import perf_counter as cont
 from colorama import Fore, Back, init
 
+cls2 = lambda: print("\033[12A\033[2K", end="")
+
 init(autoreset=True)
 from ollama import chat
 from ollama import ChatResponse
@@ -58,15 +60,14 @@ def runmodel():
                 for i in range(spaces2):
                     space2 += " "
                 cmdlist2.append(f"{item[0]}{space} │ {item[1]}{space2}")
-            cls()
+            cls2()
             out = ""
             cursor.hide()
             for item in cmdlist2:
                 for item1 in [*item]:
-                    if not item1 == " ":
-                        sleep(0.009)
+                    sleep(0.02)
                     out = out + item1
-                    cls()
+                    cls2()
                     print(
                         Fore.BLUE
                         + "╭"

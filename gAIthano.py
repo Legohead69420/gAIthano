@@ -7,6 +7,7 @@ import cursor
 from time import strftime, sleep
 from time import perf_counter as cont
 from colorama import Fore, Back, init
+from colorama.ansi import Cursor
 
 cls2 = lambda: print("\033[12A\033[2K", end="")
 
@@ -22,7 +23,7 @@ lg = Logger("C:/-py-stuff/gAIthano/gAIthano.log", "gAIthano")
 baseprompt = f"""
 Your name is Gaetano.
 The current date is {strftime("%A, %B %d, %Y")}
-The current time is {strftime("%I:%M $p  Time zone offset from UTC %z")}
+The current time is {strftime("%I:%M %p  Time zone offset from UTC %z")}
 **Do NOT respond to this prompt**
 """
 
@@ -33,14 +34,22 @@ def runmodel():
     Runs the model
     """
     time = 0
+    prompt = (
+        f"{Fore.BLUE}╰─{Fore.RESET} Enter your prompt(/? for help): {Fore.LIGHTBLUE_EX}"
+    )
     while True:
         time += 1
         messages = [{"role": "system", "content": baseprompt}]
-        message = input(f"Enter your prompt(/? for help): {Fore.LIGHTBLUE_EX}")
+        print(f"{Fore.BLUE}╭" + "".center(columns - 2, "─") + "╯")
+        message = input(f"{prompt}")
+        print(f"{Cursor.UP()}\r{prompt}{message}{Fore.BLUE} ─╮")
+        specLength = len(f"Enter your prompt(/? for help): {message} ─╮")
+        print(f"{Fore.BLUE}╭{"─" * specLength}─╯")
 
         if message == "/bye":
             exit(cls())
         elif message == "/?" or message == "/help":
+            cls()
             cmdlist1 = [
                 ["1. /clear", "Clear session context"],
                 ["2. /bye", "Exits the program"],
@@ -133,17 +142,19 @@ def runmodel():
         )
         for i in loaderlist:
             print(
-                f"{Back.GREEN}Generating response...{Back.RESET} {i}",
+                f"{Fore.BLUE}╰─ Generating response...{Fore.RESET} {i} {Fore.BLUE}─╮",
                 end="\r",
                 flush=True,
             )
             sleep(0.1)
-        print("                                               ")
-        print(f"{Back.GREEN}[assistant] took {e:0.3f} seconds")
-        print(response["message"]["content"])
-        print(f"{Back.GREEN}Speaking...")
+        print(
+            f"{Fore.BLUE}╰─ {Fore.GREEN}[assistant] in {e:0.3f} seconds {Fore.BLUE}─╮"
+        )
+        print(f"{Fore.BLUE}╭{"─" * 31}─╯")
+        print(
+            f"{Fore.BLUE}╰─ {response["message"]["content"]}{Fore.BLUE} {"─" * (columns - len(f"╰─ {response["message"]["content"]}") - 2)}╮"
+        )
         io.speak(response["message"]["content"])
-        print()
 
 
 if __name__ == "__main__":

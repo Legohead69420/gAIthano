@@ -33,7 +33,7 @@ def runmodel():
     while True:
         time += 1
         messages = [{"role": "system", "content": baseprompt}]
-        message = binput("Enter your prompt")
+        message = input(f"Enter your prompt(/? for help): {Fore.LIGHTBLUE_EX}")
 
         if message == "/bye":
             exit(cls())

@@ -29,6 +29,9 @@ The current time is {strftime("%I:%M $p  Time zone offset from UTC %z")}
 
 @lg.logdec
 def runmodel():
+    """
+    Runs the model
+    """
     time = 0
     while True:
         time += 1
